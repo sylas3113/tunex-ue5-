@@ -1,0 +1,46 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "5.3",
+	"Category": "",
+	"Description": "TuneX - Build, tune, and customize your car like a pro. All-in-one platform for car tuning, performance upgrades, and visual modifications.",
+	"Modules": [
+		{
+			"Name": "TuneX",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Core",
+				"CoreUObject",
+				"Engine",
+				"InputCore",
+				"RHI",
+				"RenderCore",
+				"DeveloperTools"
+			]
+		}
+	],
+	"TargetPlatforms": [
+		"Windows"
+	],
+	"Plugins": [
+		{
+			"Name": "ModelingToolsEditorMode",
+			"Enabled": true
+		},
+		{
+			"Name": "MeshPainting",
+			"Enabled": true
+		},
+		{
+			"Name": "PluginBrowser",
+			"Enabled": true
+		}
+	],
+	"AdditionalRestrictions": "",
+	"IsSampleProject": false,
+	"SupportsPixelStreaming": false,
+	"Product": "TuneX",
+	"CopyrightNotice": "",
+	"TrademarkNotice": "",
+	"LicensedFrom": ""
+}
