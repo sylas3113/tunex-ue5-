@@ -67,6 +67,15 @@ TuneX/
 # Or use Unreal Editor: File > Refresh Visual Studio Project
 ```
 
+### Quick Start for Phase 1 Vehicle System
+1. **Create a vehicle configuration**: See `QUICK_START_GUIDE.md`
+2. **Test key bindings**: 1/2/3 for bumpers, Q/W/E for paint
+3. **Extend in Blueprint**: All C++ classes are Blueprint-friendly
+
+**Controls** (in Play mode):
+- `1`, `2`, `3` - Cycle bumper options
+- `Q`, `W`, `E` - Cycle paint options
+
 ## Development
 
 ### C++ Module Structure
@@ -90,17 +99,24 @@ The project is configured for maximum visual quality:
 
 ## Roadmap
 
-### Phase 1: Foundation ✅
+### Phase 1: Foundation & Modular Car System ✅
 - [x] UE5 5.3+ project setup
 - [x] Rendering configuration (Nanite, Lumen, Ray Tracing)
 - [x] Production folder structure
 - [x] Version control with Git LFS
+- [x] **Modular car data system** (BPC_Vehicle_Master, ST_CarPart)
+- [x] **Part compatibility system** (FCarPart with CompatibilityTags)
+- [x] **Car variant definitions** (UVehicleConfigDataAsset)
+- [x] **Key-based cycling system** (BP_TuningController)
+- [x] **Interface-driven communication** (I_VehicleModifier)
 
-### Phase 2: Car & Part Architecture (Next)
-- [ ] Modular car data system
-- [ ] Part compatibility system
-- [ ] Car variant definitions
-- [ ] Performance stat tracking
+📖 **See**: `PHASE1_SUMMARY.md` and `QUICK_START_GUIDE.md`
+
+### Phase 2: Substrate Materials & Advanced Rendering (Next)
+- [ ] Substrate material system integration
+- [ ] Advanced paint system (metallic, pearl, matte finishes)
+- [ ] Dynamic lighting response
+- [ ] Material parameter animations
 
 ### Phase 3: Core Systems
 - [ ] Tuning interface
