@@ -7,6 +7,139 @@
 #include "CarPartData.generated.h"
 
 /**
+ * Material type enumeration for automotive materials
+ */
+UENUM(BlueprintType)
+enum class EMaterialType : uint8
+{
+	MetallicPaint		UMETA(DisplayName = "Metallic Paint"),
+	PearlPaint			UMETA(DisplayName = "Pearl Paint"),
+	FrozenPaint			UMETA(DisplayName = "Frozen Paint"),
+	CarbonFiber			UMETA(DisplayName = "Carbon Fiber"),
+	Glass				UMETA(DisplayName = "Glass with Ceramic Tint"),
+	SolidPaint			UMETA(DisplayName = "Solid Paint"),
+	MattePaint			UMETA(DisplayName = "Matte Paint")
+};
+
+/**
+ * Structure for advanced automotive material configuration
+ */
+USTRUCT(BlueprintType)
+struct FAutomotiveMaterial
+{
+	GENERATED_BODY()
+
+	// Material type classification
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Automotive Material")
+	TEnumAsByte<EMaterialType> MaterialType;
+
+	// Base material instance (for material instances)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Automotive Material")
+	TSoftObjectPtr<UMaterialInterface> BaseMaterial;
+
+	// Display name shown in UI
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Automotive Material")
+	FString DisplayName;
+
+	// Unique identifier for this material
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Automotive Material")
+	FName MaterialID;
+
+	// Price for this material option
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Automotive Material")
+	float Price;
+
+	// Layer 1: Primer settings
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Primer Layer")
+	float PrimerRoughness; // Default: 0.8
+
+	// Layer 2: Base Color settings
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Base Color Layer")
+	FLinearColor BaseColor; // RGB color input
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Base Color Layer")
+	float MetallicIntensity; // Metallic flake control (0-1)
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Base Color Layer")
+	float PearlShiftIntensity; // Pearl shift effect (0-1)
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Base Color Layer")
+	FLinearColor PearlShiftColor; // RGB shift based on viewing angle
+
+	// Layer 3: Clear Coat settings
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Clear Coat Layer")
+	float ClearCoatGlossiness; // Glossiness slider (0-1)
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Clear Coat Layer")
+	float ClearCoatRoughness; // Roughness override
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Clear Coat Layer")
+	float RefractiveIndex; // Physically accurate IOR (1.3-1.6)
+
+	// Layer 4: Ceramic Coating settings
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ceramic Coating Layer")
+	bool bEnableCeramicCoating; // Optional refraction layer for depth
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ceramic Coating Layer")
+	float HydrophobicModifier; // Hydrophobic property modifier (0-1)
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ceramic Coating Layer")
+	float DurabilityFactor; // Durability visualization parameter (0-1)
+
+	// Carbon Fiber specific settings
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Carbon Fiber")
+	float WeaveScale; // Weave scale adjustment (0.1-2.0)
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Carbon Fiber")
+	float WeaveAngle; // Direction control (0°, 45°, 90°)
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Carbon Fiber")
+	float ResinTintIntensity; // Resin tint parameter (0-1)
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Carbon Fiber")
+	float CarbonFiberGloss; // Gloss/Matte slider (0-1)
+
+	// Glass specific settings
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Glass")
+	float VisibleLightTransmission; // VLT % slider: 0-100%
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Glass")
+	FLinearColor GlassTintColor; // Optional color tint
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Glass")
+	float FresnelEdgeDarkening; // Fresnel-based edge darkening (0-1)
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Glass")
+	float InteriorReflection; // Interior reflection parameter (0-1)
+
+	FAutomotiveMaterial()
+		: MaterialType(EMaterialType::MetallicPaint)
+		, MaterialID(NAME_None)
+		, Price(0.0f)
+		, PrimerRoughness(0.8f)
+		, BaseColor(FLinearColor::White)
+		, MetallicIntensity(0.5f)
+		, PearlShiftIntensity(0.0f)
+		, PearlShiftColor(FLinearColor::Silver)
+		, ClearCoatGlossiness(0.9f)
+		, ClearCoatRoughness(0.1f)
+		, RefractiveIndex(1.5f)
+		, bEnableCeramicCoating(false)
+		, HydrophobicModifier(0.7f)
+		, DurabilityFactor(0.8f)
+		, WeaveScale(1.0f)
+		, WeaveAngle(0.0f)
+		, ResinTintIntensity(0.3f)
+		, CarbonFiberGloss(0.6f)
+		, VisibleLightTransmission(70.0f)
+		, GlassTintColor(FLinearColor::White)
+		, FresnelEdgeDarkening(0.3f)
+		, InteriorReflection(0.5f)
+	{
+	}
+};
+
+/**
  * Structure that defines a single car part with all its metadata
  * Used for bumpers, lights, wheels, interior components, etc.
  */
@@ -51,7 +184,7 @@ struct FCarPart
 };
 
 /**
- * Structure for paint/material configuration
+ * Structure for paint/material configuration (legacy support)
  */
 USTRUCT(BlueprintType)
 struct FPaintColor
@@ -74,9 +207,18 @@ struct FPaintColor
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Paint")
 	float Price;
 
+	// Extended automotive material properties
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Automotive Material")
+	FAutomotiveMaterial AdvancedMaterial;
+
+	// Legacy compatibility flag
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Paint")
+	bool bUseLegacyMaterial;
+
 	FPaintColor()
 		: PaintID(NAME_None)
 		, Price(0.0f)
+		, bUseLegacyMaterial(true)
 	{
 	}
 };
